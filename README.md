@@ -17,14 +17,14 @@
 
 ## API
 
-| Метод  | Путь             | Описание                                  |
-| ------ | ---------------- | ----------------------------------------- |
-| POST   | `/api/jobs`      | Создать задание `{ "urls": [...] }`       |
-| GET    | `/api/jobs`      | Список заданий с краткой статистикой       |
-| GET    | `/api/jobs/:id`  | Детали задания (по каждому URL)            |
-| DELETE | `/api/jobs/:id`  | Отменить задание                          |
+| Метод  | Путь            | Описание                             |
+| ------ | --------------- | ------------------------------------ |
+| POST   | `/api/jobs`     | Создать задание `{ "urls": [...] }`  |
+| GET    | `/api/jobs`     | Список заданий с краткой статистикой |
+| GET    | `/api/jobs/:id` | Детали задания (по каждому URL)      |
+| DELETE | `/api/jobs/:id` | Отменить задание                     |
 
-Статусы задания: `pending`, `in_progress`, `completed`, `cancelled`, `failed`.
+Статусы задания: `pending`, `in_progress`, `completed`, `completed_with_errors`, `cancelled`, `failed`.
 Статусы URL: `pending`, `in_progress`, `success`, `error`, `cancelled`.
 
 ## Локальный запуск
