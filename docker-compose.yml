@@ -1,0 +1,21 @@
+services:
+  server:
+    build:
+      context: ./server
+    container_name: url-checker-server
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+    container_name: url-checker-client
+    depends_on:
+      - server
+    ports:
+      - "8080:80"
+    restart: unless-stopped
