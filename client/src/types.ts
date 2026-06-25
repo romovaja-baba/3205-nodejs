@@ -2,6 +2,7 @@ export type JobStatus =
   | 'pending'
   | 'in_progress'
   | 'completed'
+  | 'completed_with_errors'
   | 'cancelled'
   | 'failed';
 
@@ -46,6 +47,7 @@ export interface JobDetails extends JobSummary {
 
 export const FINAL_JOB_STATUSES: JobStatus[] = [
   'completed',
+  'completed_with_errors',
   'cancelled',
   'failed',
 ];

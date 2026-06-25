@@ -13,6 +13,7 @@ const STATUS_COLOR: Record<JobStatus | UrlStatus, ChipProps['color']> = {
   pending: 'default',
   cancelled: 'warning',
   completed: 'success',
+  completed_with_errors: 'warning',
 };
 
 export const StatusBadge = ({ status }: Props) => {

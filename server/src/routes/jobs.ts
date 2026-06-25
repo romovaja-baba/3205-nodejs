@@ -16,6 +16,12 @@ const router = Router();
 
 const MAX_URLS_PER_JOB = 1000;
 
+const isValidUrl = (value: string) => {
+  if (!URL.canParse(value)) return false;
+  const parsed = new URL(value);
+  return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+};
+
 const createJobLimiter = rateLimit({
   windowMs: 60_000,
   limit: 30,
@@ -48,7 +54,7 @@ router.post('/', createJobLimiter, (req: Request, res: Response) => {
     });
   }
 
-  const invalid = cleaned.filter((u) => !URL.canParse(u));
+  const invalid = cleaned.filter((u) => !isValidUrl(u));
   if (invalid.length > 0) {
     return res.status(400).json({ error: 'Some URLs are invalid', invalid });
   }
@@ -77,7 +83,9 @@ router.delete('/:id', (req: Request, res: Response) => {
     return res.status(404).json({ error: 'Job not found' });
   }
 
-  if (job.status === 'completed' || job.status === 'cancelled') {
+  if (
+    ['completed', 'cancelled', 'completed_with_errors'].includes(job.status)
+  ) {
     return res.status(409).json({
       error: `Job is already ${job.status}`,
     });

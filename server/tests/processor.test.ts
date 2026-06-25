@@ -11,7 +11,12 @@ import {
 } from '../src/services/jobProcessor';
 import { JobStatus } from '../src/types';
 
-const FINAL: JobStatus[] = ['completed', 'cancelled', 'failed'];
+const FINAL: JobStatus[] = [
+  'completed',
+  'completed_with_errors',
+  'cancelled',
+  'failed',
+];
 
 const waitForStatus = async (
   jobId: string,
@@ -54,7 +59,7 @@ describe('job lifecycle', () => {
     expect(result.urls.every((u) => u.status === 'success')).toBe(true);
   });
 
-  it('marks unreachable URLs as error but still completes', async () => {
+  it('marks job as completed_with_errors when at least one URL fails', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn(async () => {
@@ -67,7 +72,7 @@ describe('job lifecycle', () => {
     await waitForStatus(job.id, (s) => FINAL.includes(s));
 
     const result = getJob(job.id)!;
-    expect(result.status).toBe('completed');
+    expect(result.status).toBe('completed_with_errors');
     expect(result.urls[0].status).toBe('error');
     expect(result.urls[0].error).toMatch(/boom/);
   });

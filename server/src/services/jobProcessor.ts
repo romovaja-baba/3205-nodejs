@@ -154,7 +154,8 @@ const runJob = async (jobId: string): Promise<void> => {
     return;
   }
 
-  job.status = 'completed';
+  const hasErrors = job.urls.some((item) => item.status === 'error');
+  job.status = hasErrors ? 'completed_with_errors' : 'completed';
   markFinished(job.id);
 };
 
@@ -167,6 +168,7 @@ export const finalizeCancellation = (jobId: string) => {
       item.finishedAt = item.finishedAt ?? new Date().toISOString();
     }
   }
-  job.status = 'cancelled';
+  const hasErrors = job.urls.some((url) => url.status === 'error');
+  job.status = hasErrors ? 'completed_with_errors' : 'cancelled';
   markFinished(job.id);
 };
